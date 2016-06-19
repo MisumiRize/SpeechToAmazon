@@ -11,6 +11,9 @@ class MyApplication : Application() {
         intentFilter.addAction(Intent.ACTION_SCREEN_ON)
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
         registerReceiver(ScreenReceiver(), intentFilter)
+
+        val i = Intent(this, AccelerometerService::class.java)
+        startService(i)
     }
 }
 
