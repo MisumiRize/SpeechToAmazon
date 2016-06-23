@@ -14,10 +14,10 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'String', 'API_BASE_URL', '"http://192.168.10.1"'
+            buildConfigField 'String', 'API_BASE_URL', '"http://10.0.2.2:3000"'
         }
         release {
-            buildConfigField 'String', 'API_BASE_URL', '"http://192.168.10.1"'
+            buildConfigField 'String', 'API_BASE_URL', '"http://10.0.2.2:3000"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -35,6 +35,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     testCompile 'junit:junit:4.12'
 }

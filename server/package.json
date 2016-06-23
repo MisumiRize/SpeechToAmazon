@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "private": true,
+  "dependencies": {
+    "apac": "^2.0.0",
+    "co-body": "^4.2.0",
+    "dotenv": "^2.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "koa": "^1.2.0",
+    "koa-route": "^2.4.2",
+    "slack-amazon-bot": "git+https://git@github.com/MisumiRize/slack-amazon-bot.git"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

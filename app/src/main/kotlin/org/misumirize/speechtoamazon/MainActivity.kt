@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.speech.RecognizerIntent
 import android.support.v7.app.AppCompatActivity
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +24,16 @@ class MainActivity : AppCompatActivity() {
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1)
         val wordList = findViewById(R.id.word_list) as ListView
         wordList.adapter = adapter
-
+        wordList.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            AmazonClient.createCart(AmazonCart(adapter!!.getItem(position)))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        if (it.code() == 200) {
+                            adapter!!.clear()
+                        }
+                    }
+        }
     }
 
     override fun onStart() {
@@ -54,7 +66,17 @@ class MainActivity : AppCompatActivity() {
             if (resultCode == RESULT_OK) {
                 adapter?.clear()
                 val results = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                adapter?.addAll(results)
+                val item = results?.firstOrNull()
+                if (item != null) {
+                    AmazonClient.createCart(AmazonCart(item))
+                            .subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                if (it.code() != 200) {
+                                    adapter?.addAll(results)
+                                }
+                            }
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
